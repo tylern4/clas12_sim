@@ -1,0 +1,15 @@
+set inputDir /path/to/input
+set outputDir /path/to/output
+set farm.disk 5
+set farm.time 1200
+set farm.os centos7
+set farm.track analysis
+set farm.memory 4
+set farm.cpu 4
+set threads 4
+set javaMemory 2
+set session s_tylern_cook
+set description d_tylern_cook
+set fileList /path/to/file.list
+run farm
+exit

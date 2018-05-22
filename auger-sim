@@ -1,0 +1,19 @@
+PROJECT: clas12
+#TRACK: simulation
+TRACK: debug
+JOBNAME: sim_clas12
+OS: centos7
+MEMORY: 1 GB
+DISK_SPACE: 6 GB
+TIME: 25
+
+INPUT_FILES: /path/to/gen.dat
+
+INPUT_DATA: lundFile.dat
+
+OTHER_FILES: /group/clas12/gemc/4a.2.3/clas12.gcard
+
+OUTPUT_DATA: sim.evio
+OUTPUT_TEMPLATE: /path/to/output/farm_sim.evio
+
+COMMAND: source /group/clas12/gemc/environment.csh 4a.2.3 ; gemc clas12.gcard -INPUT_GEN_FILE="LUND, lundFile.dat" -OUTPUT="evio, sim.evio" -RUNNO=11 -USE_GUI=0 -N=1000 ; evio2hipo -r 11 -t $TORUS_FEILD -s $SOLO_FEILD -o sim.hipo sim.evio ; ls -lthr
