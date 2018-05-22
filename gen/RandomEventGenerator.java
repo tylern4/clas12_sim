@@ -72,7 +72,7 @@ public class RandomEventGenerator {
 					}
 			  }
 		 }
-		
+
 		 return event;
 	}
 
@@ -86,11 +86,16 @@ public class RandomEventGenerator {
 
 	public static void main(String[] args) {
 		RandomEventGenerator gen = new RandomEventGenerator();
+		int num_events = 1000000;
+		if(args.length > 1){
+			num_events = Integer.parseInt(args[0]);
+		}
+
 
 		try {
 		PrintWriter pwriter = new PrintWriter("gen.dat", "UTF-8");
 
-		for(int k = 0; k < 1000000; k++) {
+		for(int k = 0; k < num_events; k++) {
 			int randomSector = ThreadLocalRandom.current().nextInt(1, 7);
 			int next2sector = (randomSector+2)%6;
 			if(next2sector == 0) next2sector = 6;
