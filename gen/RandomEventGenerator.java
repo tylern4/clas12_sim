@@ -90,7 +90,7 @@ public class RandomEventGenerator {
 		try {
 		PrintWriter pwriter = new PrintWriter("gen.dat", "UTF-8");
 
-		for(int k = 0; k < 10000; k++) {
+		for(int k = 0; k < 1000000; k++) {
 			int randomSector = ThreadLocalRandom.current().nextInt(1, 7);
 			int next2sector = (randomSector+2)%6;
 			if(next2sector == 0) next2sector = 6;
