@@ -1,8 +1,7 @@
 <Request>
-  <Email email="tylern@jlab.org" request="true" job="true"/>
+  <Email email="tylern@jlab.org" request="false" job="true"/>
   <Project name="clas12"/>
   <Track name="test"/>
-  <Name name="test"/>
   <CPU core="1"/>
   <Memory space="1" unit="GB"/>
   <TimeLimit unit="hours" time="1"/>
@@ -10,7 +9,8 @@
 
   <Command>
     <![CDATA[
-    /home/tylern/clas12_sim/submit/sim.sh
+    	echo "hello?";
+	/u/home/tylern/clas12_sim/submit/sim.sh
   ]]>
   </Command>
 
@@ -21,8 +21,10 @@
   <ForEach list="num">
 
     <Job>
-      <Input src="file:/home/tylern/clas12_sim/RandomEventGenerator.java" dest="RandomEventGenerator.java"/>
-      <Input src="sim.hipo" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.hipo"/>
+	<Name name="sim_test_${num}"/>
+      <Input src="file:/home/tylern/clas12_sim/gen/RandomEventGenerator.java" dest="RandomEventGenerator.java"/>
+      <Output src="sim.hipo" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.hipo"/>
+      <Output src="sim.evio" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.evio"/>
     </Job>
   </ForEach>
 </Request>
