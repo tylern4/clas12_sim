@@ -1,6 +1,6 @@
 JAVAC=javac
 COAT=$(COATJAVA)
-J_FLAGS=-cp "$COAT/lib/clas/*"
+J_FLAGS=-cp "$(COAT)/lib/clas/*"
 sources = $(wildcard *.java)
 classes = $(sources:.java=.class)
 
