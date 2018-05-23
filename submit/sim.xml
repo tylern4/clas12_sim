@@ -21,7 +21,8 @@
   <ForEach list="num">
     <Job>
       <Name name="sim_test_${num}"/>
-      <Input src="file:/home/tylern/clas12_sim/gen/RandomEventGenerator.java" dest="RandomEventGenerator.java"/>
+      <!--Input src="file:/home/tylern/clas12_sim/gen/RandomEventGenerator.java" dest="RandomEventGenerator.java"/-->
+      <Input src="file:/home/tylern/clas12_sim/gen/gen.dat" dest="gen.dat"/>
       <Input src="file:/group/clas12/gemc/4a.2.3/clas12.gcard" dest="clas12.gcard"/>
       <Output src="sim.hipo" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.hipo"/>
       <Output src="sim.evio" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.evio"/>
