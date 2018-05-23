@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-source /site/12gev_phys/softenv.sh 2.2
+source /site/12gev_phys/softenv.sh 2.2 > /dev/null
+
+set -xv
 
 export TORUS_FEILD=-1.0
 export SOLO_FEILD=1.0
