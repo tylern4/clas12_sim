@@ -2,7 +2,6 @@
   <Email email="tylern@jlab.org" request="true" job="true"/>
   <Project name="clas12"/>
   <Track name="test"/>
-  <Name name="test"/>
   <CPU core="1"/>
   <Memory space="1" unit="GB"/>
   <TimeLimit unit="hours" time="1"/>
@@ -19,9 +18,9 @@
   </List>
 
   <ForEach list="num">
-
     <Job>
-      <Input src="file:/home/tylern/clas12_sim/RandomEventGenerator.java" dest="RandomEventGenerator.java"/>
+      <Name name="test_sim_${num}"/>
+      <Input src="file:/home/tylern/clas12_sim/gen/RandomEventGenerator.java" dest="RandomEventGenerator.java"/>
       <Input src="sim.hipo" dest="file:/lustre/expphy/volatile/clas12/tylern/test_sim/sim_${num}.hipo"/>
     </Job>
   </ForEach>
