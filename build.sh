@@ -106,7 +106,13 @@ build_geant4(){
       git clone https://github.com/Geant4/geant4.git github-source
       mkdir build
       cd build
-      cmake -DCMAKE_INSTALL_PREFIX=$G4INSTALL $G4INSTALL/github-source
+      cmake -DCMAKE_INSTALL_PREFIX=$G4INSTALL \
+        -DGEANT4_USE_GDML=ON -DXERCESC_ROOT_DIR=$XERCESCROOT \
+        -DGEANT4_USE_OPENGL_X11=ON \
+        -DGEANT4_USE_RAYTRACER_X11=ON \
+        -DGEANT4_BUILD_MULTITHREADED=ON \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        $G4INSTALL/github-source
       make -j$(nproc)
       make install
       rm -rf $G4INSTALL/github-source

@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.2)
+project(mlibrary)
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+include_directories("$ENV{G4INSTALL}/include/Geant4")
+include_directories(src)
+
+find_package(Qt5 COMPONENTS Core Widgets Xml REQUIRED)
+
+include_directories(${Qt5Core_INCLUDE_DIRS})
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${Qt5Xml_INCLUDE_DIRS})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++14")
+
+# Materials
+include_directories(gstring)
+set(GSTRING
+  gstring/gstring.cc)
+add_library(gstring ${GSTRING})
+target_link_libraries(gstring)
+
+
+include_directories(frequencySyncSignal)
+set(FREQUENCYSYNCSIGNAL
+  frequencySyncSignal/frequencySyncSignal.cc)
+add_library(frequencySyncSignal ${FREQUENCYSYNCSIGNAL})
+target_link_libraries(frequencySyncSignal)
+
+include_directories(translationTable)
+set(TRANSLATIONTABLE
+  translationTable/translationTable.cc)
+add_library(translationTable ${TRANSLATIONTABLE})
+target_link_libraries(translationTable)
