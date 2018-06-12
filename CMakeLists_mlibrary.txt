@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 project(mlibrary)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include_directories("$ENV{G4INSTALL}/include/Geant4")
+include_directories("$ENV{CLHEP_BASE_DIR}/include")
 include_directories(src)
 
 find_package(Qt5 COMPONENTS Core Widgets Xml REQUIRED)
@@ -22,7 +22,6 @@ set(GSTRING
 add_library(gstring ${GSTRING})
 target_link_libraries(gstring)
 
-
 include_directories(frequencySyncSignal)
 set(FREQUENCYSYNCSIGNAL
   frequencySyncSignal/frequencySyncSignal.cc)
@@ -34,3 +33,10 @@ set(TRANSLATIONTABLE
   translationTable/translationTable.cc)
 add_library(translationTable ${TRANSLATIONTABLE})
 target_link_libraries(translationTable)
+
+
+install (TARGETS gstring frequencySyncSignal translationTable ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+install(DIRECTORY gstring INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")
+install(DIRECTORY frequencySyncSignal INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")
+install(DIRECTORY translationTable INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")

@@ -3,17 +3,20 @@ project(gemc)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+#set(CMAKE_AUTOMOC ON)
 
 include_directories("$ENV{G4INSTALL}/include/Geant4")
+include_directories("$ENV{CADMESH}/include")
 include_directories("$ENV{MLIBRARY}/include")
-include_directories("$ENV{EVIO}/$ENV{EVIO_VERSION}/src/libsrc++")
-include_directories("$ENV{EVIO}/$ENV{EVIO_VERSION}/src/libsrc")
+include_directories("$ENV{XERCESCROOT}/include")
+include_directories("$ENV{EVIO}/src/libsrc++")
+include_directories("$ENV{EVIO}/src/libsrc")
+include_directories("$ENV{CCDB_HOME}/include")
+include_directories("$ENV{CLHEP_BASE_DIR}/include")
+include_directories("$ENV{CADMESH}/include")
 include_directories(src)
 
 
-#set(CMAKE_AUTOMOC ON)
-
-#env = init_environment("qt5 clhep evio xercesc ccdb mlibrary cadmesh")
 find_package(Qt5 COMPONENTS Core Widgets Xml Sql REQUIRED)
 
 include_directories(${Qt5Core_INCLUDE_DIRS})
@@ -21,8 +24,18 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Xml_INCLUDE_DIRS})
 include_directories(${Qt5Sql_INCLUDE_DIRS})
 
+link_directories("$ENV{G4INSTALL}/lib")
+link_directories("$ENV{CADMESH}/lib")
+link_directories("$ENV{MLIBRARY}/lib")
+link_directories("$ENV{XERCESCROOT}/lib")
+link_directories("$ENV{EVIO}/lib")
+link_directories("$ENV{EVIO}/lib")
+link_directories("$ENV{CCDB_HOME}/lib")
+link_directories("$ENV{CLHEP_BASE_DIR}/lib")
+link_directories("$ENV{CADMESH}/lib")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++14")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wno-deprecated")
 
 # Materials
 include_directories(materials utilities)
@@ -32,7 +45,8 @@ set(MATERIALS
   materials/mysql_materials.cc
   materials/text_materials.cc)
 add_library(gmaterials ${MATERIALS})
-target_link_libraries(gmaterials Widgets Core Xml)
+target_link_libraries(gmaterials)
+# Qt5::Widgets Qt5::Core Qt5::Xml)
 
 
 # Mirrors
@@ -91,118 +105,166 @@ add_library(gsensitivity ${SENSI})
 
 
 # Physics
-#include_directories(physics utilities)
-#set(PHYS
-#	physics/PhysicsList.cc
-#	physics/PhysicsListMessenger.cc)
-#add_library(gphysics ${PHYS})
+include_directories(physics utilities)
+set(PHYS
+	physics/PhysicsList.cc
+	physics/PhysicsListMessenger.cc)
+add_library(gphysics ${PHYS})
 
 # Fields
-#include_directories(fields)
-#set(FEILD
-#	fields/field.cc
-#	fields/fieldFactory.cc
-#	fields/asciiField.cc
-#	fields/mappedField.cc
-#	fields/multipoleField.cc
-#	fields/symmetries/dipole.cc
-#	fields/symmetries/cylindrical.cc
-#fields/symmetries/phi-segmented.cc)
-#add_library(gfields ${FEILD})
+include_directories(fields)
+set(FEILD
+	fields/field.cc
+	fields/fieldFactory.cc
+	fields/asciiField.cc
+	fields/mappedField.cc
+	fields/multipoleField.cc
+	fields/symmetries/dipole.cc
+	fields/symmetries/cylindrical.cc
+fields/symmetries/phi-segmented.cc)
+add_library(gfields ${FEILD})
 
 
 # Hit Processes
-#include_directories(materials)
-#env.Append(CPPPATH = ['hitprocess', 'hitprocess/clas12', 'hitprocess/clas12/svt', 'hitprocess/clas12/micromegas'])
-#env.Append(CPPPATH = ['hitprocess/Aprime', 'hitprocess/GlueX', 'hitprocess/solid'])
-#set(HITP
-#	hitprocess/HitProcess_MapRegister.cc
-#	hitprocess/flux_hitprocess.cc
-#	hitprocess/counter_hitprocess.cc
-#	hitprocess/clas12/micromegas/Lorentz.cc
-#	hitprocess/clas12/micromegas/FMT_hitprocess.cc
-#	hitprocess/clas12/micromegas/fmt_strip.cc
-#	hitprocess/clas12/micromegas/BMT_hitprocess.cc
-#	hitprocess/clas12/micromegas/bmt_strip.cc
-#	hitprocess/clas12/micromegas/ftm_hitprocess.cc
-#	hitprocess/clas12/micromegas/ftm_strip.cc
-#	hitprocess/clas12/rtpc_hitprocess.cc
-#	hitprocess/clas12/svt/bst_hitprocess.cc
-#	hitprocess/clas12/svt/bst_strip.cc
-#	hitprocess/clas12/ctof_hitprocess.cc
-#	hitprocess/clas12/cnd_hitprocess.cc
-#	hitprocess/clas12/dc_hitprocess.cc
-#	hitprocess/clas12/ec_hitprocess.cc
-#	hitprocess/clas12/ecs_hitprocess.cc
-#	hitprocess/clas12/ftof_hitprocess.cc
-#	hitprocess/clas12/ft_cal_hitprocess.cc
-#	hitprocess/clas12/ft_hodo_hitprocess.cc
-#	hitprocess/clas12/htcc_hitprocess.cc
-#	hitprocess/clas12/ltcc_hitprocess.cc
-#	hitprocess/clas12/pcal_hitprocess.cc
-#	hitprocess/clas12/rich_hitprocess.cc
-#	hitprocess/bdx/cormo_hitprocess.cc
-#	hitprocess/bdx/veto_hitprocess.cc
-#	hitprocess/bdx/crs_hitprocess.cc
-#	hitprocess/eic/eic_compton_hitprocess.cc
-#	hitprocess/eic/eic_dirc_hitprocess.cc
-#	hitprocess/eic/eic_ec_hitprocess.cc
-#	hitprocess/eic/eic_preshower_hitprocess.cc
-#	hitprocess/eic/eic_rich_hitprocess.cc
-#	hitprocess/injector/bubble_hitprocess.cc
-#	hitprocess/HPS/ECAL_hitprocess.cc
-#	hitprocess/HPS/SVT_hitprocess.cc
-#hitprocess/HPS/muon_hodo_hitprocess.cc)
-#add_library(ghitprocess ${HITP})
+include_directories(hitprocess hitprocess/clas12 hitprocess/clas12/svt hitprocess/clas12/micromegas)
+include_directories(hitprocess/Aprime hitprocess/GlueX hitprocess/solid)
+set(HITP
+  hitprocess/HitProcess_MapRegister.cc
+  hitprocess/flux_hitprocess.cc
+  hitprocess/counter_hitprocess.cc
+  hitprocess/clas12/micromegas/Lorentz.cc
+  hitprocess/clas12/micromegas/FMT_hitprocess.cc
+  hitprocess/clas12/micromegas/fmt_strip.cc
+  hitprocess/clas12/micromegas/BMT_hitprocess.cc
+  hitprocess/clas12/micromegas/bmt_strip.cc
+  hitprocess/clas12/micromegas/ftm_hitprocess.cc
+  hitprocess/clas12/micromegas/ftm_strip.cc
+  hitprocess/clas12/rtpc_hitprocess.cc
+  hitprocess/clas12/svt/bst_hitprocess.cc
+  hitprocess/clas12/svt/bst_strip.cc
+  hitprocess/clas12/ctof_hitprocess.cc
+  hitprocess/clas12/cnd_hitprocess.cc
+  hitprocess/clas12/dc_hitprocess.cc
+  hitprocess/clas12/ec_hitprocess.cc
+  hitprocess/clas12/ecs_hitprocess.cc
+  hitprocess/clas12/ftof_hitprocess.cc
+  hitprocess/clas12/ft_cal_hitprocess.cc
+  hitprocess/clas12/ft_hodo_hitprocess.cc
+  hitprocess/clas12/htcc_hitprocess.cc
+  hitprocess/clas12/ltcc_hitprocess.cc
+  hitprocess/clas12/pcal_hitprocess.cc
+  hitprocess/clas12/rich_hitprocess.cc
+  hitprocess/bdx/cormo_hitprocess.cc
+  hitprocess/bdx/veto_hitprocess.cc
+  hitprocess/bdx/crs_hitprocess.cc
+  hitprocess/eic/eic_compton_hitprocess.cc
+  hitprocess/eic/eic_dirc_hitprocess.cc
+  hitprocess/eic/eic_ec_hitprocess.cc
+  hitprocess/eic/eic_preshower_hitprocess.cc
+  hitprocess/eic/eic_rich_hitprocess.cc
+  hitprocess/injector/bubble_hitprocess.cc
+  hitprocess/HPS/ECAL_hitprocess.cc
+  hitprocess/HPS/SVT_hitprocess.cc
+  hitprocess/HPS/muon_hodo_hitprocess.cc)
+add_library(ghitprocess ${HITP})
 
 
 # Output
-#include_directories(output)
-#set(OUT
-#	output/outputFactory.cc
-#	output/evio_output.cc
-#	output/txt_output.cc
-#	output/txt_simple_output.cc
-#output/gbank.cc)
-#add_library(goutput ${OUT})
+include_directories(output)
+set(OUT
+  output/outputFactory.cc
+  output/evio_output.cc
+  output/txt_output.cc
+  output/txt_simple_output.cc
+  output/gbank.cc)
+add_library(goutput ${OUT})
 
 # GUI
-#include_directories(gui/src)
-#set(GUI
-#	gui/src/gemc_MainGui.cc
-#	gui/src/detector_editor.cc
-#	gui/src/runControl/run_control.cc
-#	gui/src/runControl/primaryTab.cc
-#	gui/src/runControl/momControls.cc
-#	gui/src/runControl/vtxControls.cc
-#	gui/src/camera_control.cc
-#	gui/src/detector_tree.cc
-#	gui/src/infos.cc
-#	gui/src/g4dialog.cc
-#	gui/src/gsignal.cc
-#	gui/src/physicsListGui.cc
-#	gui/src//gtrigger.cc
-#utilities/graph.cc)
-#add_library(ggui ${GUI})
+include_directories(gui/src)
+set(GUI
+  gui/src/gemc_MainGui.cc
+  gui/src/detector_editor.cc
+  gui/src/runControl/run_control.cc
+  gui/src/runControl/primaryTab.cc
+  gui/src/runControl/momControls.cc
+  gui/src/runControl/vtxControls.cc
+  gui/src/camera_control.cc
+  gui/src/detector_tree.cc
+  gui/src/infos.cc
+  gui/src/g4dialog.cc
+  gui/src/gsignal.cc
+  gui/src/physicsListGui.cc
+  gui/src//gtrigger.cc
+  utilities/graph.cc)
+add_library(ggui ${GUI})
 
 
 # gemc
-#include_directories(rc)
-#set(GEMC
-#	gemc.cc
-#	src/dmesg_init.cc
-#	src/run_conditions.cc
-#	src/gemc_options.cc
-#	src/MDetectorConstruction.cc
-#	src/MEventAction.cc
-#	src/MPrimaryGeneratorAction.cc
-#	src/ActionInitialization.cc
-#src/MSteppingAction.cc)
+include_directories(rc)
+set(GEMC
+	gemc.cc
+	src/dmesg_init.cc
+	src/run_conditions.cc
+	src/gemc_options.cc
+	src/MDetectorConstruction.cc
+	src/MEventAction.cc
+	src/MPrimaryGeneratorAction.cc
+	src/ActionInitialization.cc
+  src/MSteppingAction.cc)
 
-#env.Append(LIBPATH = ['lib'])
-#env.Prepend(LIBS =  ['gmaterials', 'gmirrors', 'gparameters', 'gutilities', 'gdetector', 'gsensitivity', 'gphysics', 'gfields', 'ghitprocess', 'goutput', 'ggui'])
-#env.Program(source = gemc_sources, target = "gemc")
-
-
-#add_executable(gemc ${GEMC})
-#target_link_libraries( gemc gmaterials gmirrors gparameters gutilities gdetector gsensitivity gphysics gfields ghitprocess goutput ggui Qt5::Widgets)
+add_executable(gemc ${GEMC})
+target_link_libraries( gemc
+  evio
+  evioxx
+  expat
+  CLHEP
+  xerces-c
+  ccdb
+  assimp
+  cadmesh
+  tet
+  G4FR
+  G4GMocren
+  G4OpenGL
+  G4RayTracer
+  G4Tree
+  G4VRML
+  G4analysis
+  G4digits_hits
+  G4error_propagation
+  G4event
+  G4geometry
+  G4gl2ps
+  G4global
+  G4graphics_reps
+  G4intercoms
+  G4interfaces
+  G4materials
+  G4modeling
+  G4parmodels
+  G4particles
+  G4persistency
+  G4physicslists
+  G4processes
+  G4readout
+  G4run
+  G4track
+  G4tracking
+  G4visHepRep
+  G4visXXX
+  G4vis_management
+  G4zlib
+  gstring
+  gmaterials
+  gmirrors
+  gparameters
+  gutilities
+  gdetector
+  gsensitivity
+  gphysics
+  gfields
+  ghitprocess
+  goutput
+  ggui
+  GLU GL glut dl
+  Qt5::Widgets Qt5::Core Qt5::Xml Qt5::Sql)

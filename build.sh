@@ -259,7 +259,6 @@ build_ccdb(){
       git clone https://github.com/JeffersonLab/ccdb.git $CCDB_HOME
       cd $CCDB_HOME
       scons -j$(nproc)
-      scons install
   fi
   echo "Finishing ccdb"
 }
