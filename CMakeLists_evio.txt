@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
 project(evio_5_1)
 
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 include_directories(src/libsrc src/libsrc++)
+
+link_directories("$ENV{MYSQLIB}")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(C_SOURCE_FILES
-    src/libsrc/evio.h
-    src/libsrc/msinttypes.h
-
     src/libsrc/evio.c
     src/libsrc/eviofmt.c
     src/libsrc/eviofmtdump.c
@@ -16,17 +16,6 @@ set(C_SOURCE_FILES
     src/libsrc/evioswap.c)
 
 set(CXX_SOURCE_FILES
-    src/libsrc++/evioBankIndex.hxx
-    src/libsrc++/evioBufferChannel.hxx
-    src/libsrc++/evioFileChannel.hxx
-    src/libsrc++/evioSocketChannel.hxx
-    src/libsrc++/evioChannel.hxx
-    src/libsrc++/evioDictionary.hxx
-    src/libsrc++/evioException.hxx
-    src/libsrc++/evioTypedefs.hxx
-    src/libsrc++/evioUtil.hxx
-    src/libsrc++/evioUtilTemplates.hxx
-
     src/libsrc++/evioBankIndex.cc
     src/libsrc++/evioBufferChannel.cc
     src/libsrc++/evioFileChannel.cc
@@ -35,9 +24,17 @@ set(CXX_SOURCE_FILES
     src/libsrc++/evioException.cc
     src/libsrc++/evioUtil.cc)
 
-    add_library(evio ${C_SOURCE_FILES})
-    add_library(evioxx ${CXX_SOURCE_FILES})
+add_library(evio ${C_SOURCE_FILES})
+target_link_libraries(evio pthread expat)
+add_library(evioxx ${CXX_SOURCE_FILES})
+target_link_libraries(evioxx evio pthread expat)
 
-    install (TARGETS evio evioxx ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-    install(DIRECTORY src/libsrc INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")
-    install(DIRECTORY src/libsrc++ INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")
+add_executable(eviocopy src/execsrc/eviocopy.c)
+target_link_libraries(eviocopy evioxx evio expat)
+add_executable(evioCat src/execsrc/evioCat.cc)
+target_link_libraries(evioCat evioxx evio expat)
+
+
+install (TARGETS evio evioxx ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(DIRECTORY src/libsrc INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")
+install(DIRECTORY src/libsrc++ INCLUDE DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h*")

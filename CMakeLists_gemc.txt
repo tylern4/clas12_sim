@@ -33,7 +33,7 @@ link_directories("$ENV{EVIO}/lib")
 link_directories("$ENV{CCDB_HOME}/lib")
 link_directories("$ENV{CLHEP_BASE_DIR}/lib")
 link_directories("$ENV{CADMESH}/lib")
-
+link_directories("$ENV{MYSQLIB}")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wno-deprecated")
 
@@ -45,7 +45,7 @@ set(MATERIALS
   materials/mysql_materials.cc
   materials/text_materials.cc)
 add_library(gmaterials ${MATERIALS})
-target_link_libraries(gmaterials)
+target_link_libraries(gmaterials stdc++)
 # Qt5::Widgets Qt5::Core Qt5::Xml)
 
 
@@ -56,6 +56,7 @@ set(MIRRORS
 	mirrors/mysql_mirrors.cc
 	mirrors/text_mirrors.cc)
 add_library(gmirrors ${MIRRORS})
+target_link_libraries(gmirrors stdc++)
 
 
 # Parameters
@@ -65,6 +66,7 @@ set(PARAMETERS
 	parameters/mysql_parameters.cc
 parameters/text_parameters.cc)
 add_library(gparameters ${PARAMETERS})
+target_link_libraries(gparameters stdc++)
 
 
 # Utilities
@@ -76,7 +78,7 @@ set(UTIL
 	utilities/lXDR.cc
 	utilities/options.cc)
 add_library(gutilities ${UTIL})
-target_link_libraries(gutilities)
+target_link_libraries(gutilities stdc++)
 
 
 # Detector
@@ -90,6 +92,7 @@ set(DET
 	detector/clara_det_factory.cc
 detector/text_det_factory.cc)
 add_library(gdetector ${DET})
+target_link_libraries(gdetector stdc++)
 
 
 # Sensitivity
@@ -102,7 +105,7 @@ set(SENSI
 	sensitivity/HitProcess.cc
 sensitivity/sensitiveID.cc)
 add_library(gsensitivity ${SENSI})
-
+target_link_libraries(gsensitivity stdc++)
 
 # Physics
 include_directories(physics utilities)
@@ -110,6 +113,39 @@ set(PHYS
 	physics/PhysicsList.cc
 	physics/PhysicsListMessenger.cc)
 add_library(gphysics ${PHYS})
+target_link_libraries( gphysics
+  stdc++
+  G4FR
+  G4GMocren
+  G4OpenGL
+  G4RayTracer
+  G4Tree
+  G4VRML
+  G4analysis
+  G4digits_hits
+  G4error_propagation
+  G4event
+  G4geometry
+  G4gl2ps
+  G4global
+  G4graphics_reps
+  G4intercoms
+  G4interfaces
+  G4materials
+  G4modeling
+  G4parmodels
+  G4particles
+  G4persistency
+  G4physicslists
+  G4processes
+  G4readout
+  G4run
+  G4track
+  G4tracking
+  G4visHepRep
+  G4visXXX
+  G4vis_management
+  G4zlib)
 
 # Fields
 include_directories(fields)
@@ -123,6 +159,7 @@ set(FEILD
 	fields/symmetries/cylindrical.cc
 fields/symmetries/phi-segmented.cc)
 add_library(gfields ${FEILD})
+target_link_libraries(gfields stdc++)
 
 
 # Hit Processes
@@ -167,6 +204,7 @@ set(HITP
   hitprocess/HPS/SVT_hitprocess.cc
   hitprocess/HPS/muon_hodo_hitprocess.cc)
 add_library(ghitprocess ${HITP})
+target_link_libraries(ghitprocess ccdb Xm Xt stdc++)
 
 
 # Output
@@ -178,6 +216,7 @@ set(OUT
   output/txt_simple_output.cc
   output/gbank.cc)
 add_library(goutput ${OUT})
+target_link_libraries(goutput evioxx evio stdc++)
 
 # GUI
 include_directories(gui/src)
@@ -211,11 +250,11 @@ set(GEMC
 	src/MPrimaryGeneratorAction.cc
 	src/ActionInitialization.cc
   src/MSteppingAction.cc)
-
 add_executable(gemc ${GEMC})
 target_link_libraries( gemc
-  evio
+  stdc++
   evioxx
+  evio
   expat
   CLHEP
   xerces-c
@@ -223,6 +262,8 @@ target_link_libraries( gemc
   assimp
   cadmesh
   tet
+  frequencySyncSignal
+  translationTable
   G4FR
   G4GMocren
   G4OpenGL
