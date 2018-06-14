@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 export RED='\033[0;31m'
 export BLUE='\033[0;34m'
 export GREEN='\033[0;32m'
@@ -346,16 +348,13 @@ build_cadmesh_mlibrary(){
 
   if [ ! -f $MLIBRARY/lib/libcadmesh.so ]; then
     echo -e "${BLUE}Building cadmesh${DEF}"
-    rm -rf $CADMESH
     rm -rf $MLIBRARY
-    git clone -b v1.1 https://github.com/christopherpoole/CADMesh.git  $CADMESH/github-source
     git clone https://github.com/gemc/mlibrary.git $MLIBRARY
-    mkdir -p $CADMESH/build
-    cd $CADMESH/build
-    cmake $CADMESH/github-source -DCMAKE_INSTALL_PREFIX=$MLIBRARY/cadmesh -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_PREFIX_PATH=$G4INSTALL
+    cd $MLIBRARY
+    mkdir cadmeshBuild
+    cmake $MLIBRARY/cadmesh -DCMAKE_INSTALL_PREFIX=$MLIBRARY/cadmesh -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_PREFIX_PATH=$G4INSTALL
     make -j$(nproc)
     make install
-    rm -rf $CADMESH/github-source
     echo -e "${BLUE}Building mlibrary${DEF}"
     cd $MLIBRARY
     scons -j$(nproc) OPT=1
