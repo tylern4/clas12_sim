@@ -372,12 +372,14 @@ build_gemc(){
 
   if [ ! -f $GEMC/gemc ]; then
       echo -e "${BLUE}Building gemc${DEF}"
-      mkdir -p $GEMC
-      cd $GEMC
-      curl -o gemc-$GEMC_VERSION.tar.gz $BASE_URL/gemc/gemc-$GEMC_VERSION.tar.gz
-      tar -xvf gemc-$GEMC_VERSION.tar.gz --strip-components 1
-      rm -rf gemc-$GEMC_VERSION.tar.gz
-      scons OPT=1 -j$(nproc)
+#      mkdir -p $GEMC
+#      cd $GEMC
+#      curl -o gemc-$GEMC_VERSION.tar.gz $BASE_URL/gemc/gemc-$GEMC_VERSION.tar.gz
+#      tar -xvf gemc-$GEMC_VERSION.tar.gz --strip-components 1
+#      rm -rf gemc-$GEMC_VERSION.tar.gz
+	git clone -b patch-1 https://github.com/tylern4/source.git $GEMC
+	cd $GEMC
+	scons OPT=1 -j$(nproc)
   fi
   echo -e "${GREEN}Finishing gemc${DEF}"
 }
